@@ -2,10 +2,12 @@
 #define DEF_COMPTE
 #include "Carte.hpp"
 #include <iostream>
-#include <ostream>
 #include <string>
 #include <vector>
-
+struct Registre {
+  std::string m_date;
+  double m_montant;
+};
 class Compte {
 public:
   // constructeur/destructeur
@@ -26,6 +28,7 @@ public:
   void modifierSolde(double new_solde);        // modifier le solde
 
 protected:
+  std::vector<Registre> m_registre; // un compte possède un registre de paiement
   std::string m_idCompte;
   double m_taux;                                       // taux d'intérêt
   virtual void afficher(std::ostream &flux) const = 0; // on affiche le solde
@@ -48,7 +51,7 @@ public:
   // Opérations modificatrices
 private:
   virtual void afficher(std::ostream &flux) const;
-  double m_limites;
+  double m_limites; // plafond limite d'épargne
 };
 
 /////////////////////////////Classe_CompteCourant/////////////////////////////////////
@@ -71,6 +74,8 @@ public:
   void modifierNbC(int new_nbC); // modifier nombre de carte limite
 
 private:
+  // un compte courant possède une limite de découvert autorisé
+  double m_decouvert;
   virtual void afficher(std::ostream &flux) const;
   double m_plafond;              // un compte à un plafond d'envoie
   int m_nbCarte;                 // limite de carte possible
