@@ -12,7 +12,6 @@ class Compte {
 public:
   // constructeur/destructeur
   Compte();
-  Compte(double solde);
   virtual ~Compte();
   // copy
   Compte(Compte const &copy);
@@ -20,12 +19,14 @@ public:
   bool ifexist() const; // Renvoie true si compte existe
 
   // Opérations modificatrices
-  void envoyer(
+  void debiter(double montant);  // un compte peut etre débité
+  void crediter(double montant); // un compte créditer
+  /* void envoyer(
       double montant,
       std::string const &id_compte); // Envoyer de l'argent vers un autre compte
   void recevoir(double montant,
-                std::string const &id_compte); // Rcevoir de l'argent
-  void modifierSolde(double new_solde);        // modifier le solde
+                std::string const &id_compte); // Rcevoir de l'argent */
+  void modifierSolde(double new_solde); // modifier le solde
 
 protected:
   std::vector<Registre> m_registre; // un compte possède un registre de paiement
