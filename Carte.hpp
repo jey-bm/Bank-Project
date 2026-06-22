@@ -6,10 +6,14 @@ class Compte; // Déclaration anticipé car assosiation bidirectionnelle
 
 class Carte {
 public:
+  Carte(std::string nomPrenom);
+  ~Carte();
   // opération modificatrice
   void payer(double montant); // On peut payer avec une carte
   void bloquer();             // on peut bloquer la carte
   void activer();             // On peut activer la carte
+  void gererPlafond();
+
 private:
   double m_plafond; // une carte possède un plafond de paiement
   Compte *m_compte; // une carte possède un solde du compte qui pointe sur le
