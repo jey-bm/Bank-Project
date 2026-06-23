@@ -55,10 +55,9 @@ public:
                                               // l'argent vers un autre compte
   void ajouterArgent(double montant); // une client peut ajouter de l'argent
   void retirerArgent(double montant); // Une client peut retirer de l'argent
-  void acheterTitre(int quanté,
-                    Titre const &titre); // un client peut acheter des titres
-  void vendreTitre(int quanté,
-                   Titre const &titre); // un client peut vendre des titre
+  void acheterTitre(double montant,
+                    Titre const &titre); //  un client peut acheter des titres
+  void vendreTitre(Titre const &titre);  // un client peut vendre des titre
   void contracterPret(double montant,
                       double taux); // un client peut contracter un prêt
 
