@@ -12,6 +12,7 @@ public:
   // Opérations modificatrices
   virtual Titre *clone() const = 0; // clone le titre lors de l'achat
   virtual void investir(double montant) = 0;
+  virtual double getValue() const = 0; // retourne la valeur du titre
 
 protected:
   static int m_cptid; // s'incrémente à chaque création de titre
@@ -37,6 +38,7 @@ public:
   void modifierQte(short int newQte);
   virtual Titre *clone() const;
   virtual void investir(double montant); // Calcul la nouvelle quantité d'action
+  virtual double getValue() const;
 
 private:
   double m_prix; // prix unité en bourse
@@ -58,6 +60,7 @@ public:
   virtual Titre *clone() const;
   virtual void investir(double montant);
   void modifMontant(); // Modifie montant investi
+  virtual double getValue() const;
 
 private:
   double m_montant;  // Montant investi initiallement 0

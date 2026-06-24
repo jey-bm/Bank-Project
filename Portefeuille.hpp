@@ -9,7 +9,7 @@ public:
   Portefeuille();
   ~Portefeuille();
   // Opérations observatrices
-
+  Titre *rechercher(Titre const &t); // Recherche un titre et le renvoie
   // Opérations modificatrices
   void ajouter(Titre *titre);
   void retirer(Titre *titre);
