@@ -96,7 +96,6 @@ public:
   // Opérations observatrices
   virtual void afficher(std::ostream &flux) const;
   // Opérations modificatrices
-  void gestionBonus();
   void gestionSalaire(double montant);
 
 private:
@@ -104,6 +103,5 @@ private:
   static int m_cptEmployer;           // compteur d'id
   double m_salaire;                   // Un employer à un salaire
   std::string m_poste;                // Un employer à un poste précis
-  bool m_bonus; // un employer peut ou pas recevoir un bonus
 };
 #endif

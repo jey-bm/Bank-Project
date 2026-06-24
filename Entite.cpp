@@ -49,10 +49,18 @@ Client::Client() {}
 Client::Client(string email, string numTel, string nom, string prenom,
                string dateNaiss)
     : Entite(email, numTel, nom, prenom, dateNaiss), m_cto(0) {
-  m_id = m_cptClient;
-  ++m_cptClient;
+  // cas si la liste d'id réutilisable est vide
+  if (m_listeIdC.empty()) {
+    m_id = m_cptClient;
+    ++m_cptClient;
+  } else {
+    // si elle ne l'est pas
+    m_id = m_listeIdC.back(); // Je prend le dernier élement
+    m_listeIdC.pop_back();    // puis je le retir de la liste
+  }
 }
 Client::~Client() {
+  m_listeIdC.push_back(this->m_id);
   delete m_cto;
   m_cto = nullptr;
   // on suprime le vecteur de cartes
@@ -156,10 +164,23 @@ void Client::rembourserPret(const Pret &p, CompteCourant &c) {
 }
 
 /////////////////////////////Classe_Employer/////////////////////////////////////
+int Employe::m_cptEmployer = 1;
 Employe::Employe() {}
 Employe::Employe(string email, string numTel, string nom, string prenom,
-                 string dateNaiss, string poste, double salaire) {}
-Employe::~Employe() {}
-void Employe::afficher(ostream &flux) const {}
-void Employe::gestionBonus() {}
-void Employe::gestionSalaire(double montant) {}
+                 string dateNaiss, string poste, double salaire)
+    : Entite(email, numTel, nom, prenom, dateNaiss), m_salaire(salaire),
+      m_poste(poste) {
+  if (m_listeIdE.empty()) {
+    m_id = m_cptEmployer;
+    ++m_cptEmployer;
+  } else {
+    m_id = m_listeIdE.back();
+    m_listeIdE.pop_back();
+  }
+}
+Employe::~Employe() { m_listeIdE.push_back(this->m_id); }
+void Employe::afficher(ostream &flux) const {
+  flux << "Nom : " << m_nom << " ,prenom : " << m_prenom << " Id : " << m_id
+       << " ,poste : " << m_poste << " , salaire : " << m_salaire << endl;
+}
+void Employe::gestionSalaire(double montant) { m_salaire = montant; }
