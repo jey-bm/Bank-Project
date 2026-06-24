@@ -58,8 +58,8 @@ public:
   void suppCompte();
   void suppCompte(Compte const &c);
 
-  void demanderCarte();
-  void creerCompte();
+  void demanderCarte(CompteCourant *c);
+  void ajouterCompte(Compte *c);
   void envoyer(double montant,
                Compte &c); // Un client peut envoyer de
                            // l'argent vers un autre compte

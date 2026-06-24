@@ -45,6 +45,7 @@ string Entite::getPrenom() const { return m_prenom; }
 
 /////////////////////////////Classe_Client/////////////////////////////////////
 int Client::m_cptClient = 1;
+vector<int> Client::m_listeIdC;
 Client::Client() {}
 Client::Client(string email, string numTel, string nom, string prenom,
                string dateNaiss)
@@ -97,29 +98,18 @@ void Client::suppCompte(Compte const &c) {
     }
   }
 }
-void Client::demanderCarte() {
+void Client::demanderCarte(CompteCourant *c) {
   // Je crée une instance de carte
-  Carte *c1 = new Carte(m_nom + "" + m_prenom);
-  // je l’insèrre dans ma liste de carte
+  Carte *c1 = new Carte(m_nom + "" + m_prenom, c);
+  // je l’insère dans ma liste de carte
   m_cartes.push_back(c1);
 }
-void Client::creerCompte() {
-  Compte *c;
-  cout << "Quel type de compte voulez vous ? Taper 1 ou un compte courant ou 2 "
-          "ou un compte épargne"
-       << endl;
-  int rep;
-  cin >> rep;
-  switch (rep) {
-  case 1:
-    c = new CompteCourant;
-    break;
-  case 2:
-    c = new CompteEpargne();
+void Client::ajouterCompte(Compte *c) {
+  if (c != nullptr) {
+    m_comptes.push_back(c);
   }
-  // j'ajoute à ma liste de compte
-  m_comptes.push_back(c);
 }
+
 void Client::envoyer(double montant, Compte &c) { c.crediter(montant); }
 void Client::retirerArgent(Carte &c1, double montant) { c1.payer(montant); }
 void Client::acheterTitre(double montant, const Titre &titre) {
@@ -165,6 +155,7 @@ void Client::rembourserPret(const Pret &p, CompteCourant &c) {
 
 /////////////////////////////Classe_Employer/////////////////////////////////////
 int Employe::m_cptEmployer = 1;
+vector<int> Employe::m_listeIdE;
 Employe::Employe() {}
 Employe::Employe(string email, string numTel, string nom, string prenom,
                  string dateNaiss, string poste, double salaire)
