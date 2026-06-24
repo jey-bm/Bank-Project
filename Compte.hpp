@@ -27,6 +27,8 @@ public:
   void recevoir(double montant,
                 std::string const &id_compte); // Rcevoir de l'argent */
   void modifierSolde(double new_solde); // modifier le solde
+  std::string getId() const;
+  double getSolde() const;
 
 protected:
   std::vector<Registre> m_registre; // un compte possède un registre de paiement
@@ -43,7 +45,6 @@ class CompteEpargne : public Compte {
 public:
   // constructeur
   CompteEpargne();
-  CompteEpargne(double solde, double limite);
   virtual ~CompteEpargne();
   // copy
   CompteEpargne(CompteEpargne const &copy);
@@ -61,7 +62,6 @@ class CompteCourant : public Compte {
 public:
   // constructeur
   CompteCourant();
-  CompteCourant(double plafond, double solde, int nbcarte);
   virtual ~CompteCourant();
   // copy
   CompteCourant(CompteCourant const &copy);
