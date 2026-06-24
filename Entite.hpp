@@ -1,5 +1,6 @@
 #ifndef DEF_ENTITE
 #define DEF_ENTITE
+#include "Carte.hpp"
 #include "Compte.hpp"
 #include "Portefeuille.hpp"
 #include "Titre.hpp"
@@ -10,16 +11,20 @@ class Entite {
 public:
   // constructeur/ destructeur
   Entite();
-  Entite(std::string numTel, std::string nom, std::string prenom,
-         std::string dateNaiss);
+  Entite(std::string email, std::string numTel, std::string nom,
+         std::string prenom, std::string dateNaiss);
   virtual ~Entite();
   // Opérations observatrices
   // Opérations modificatrices
   void modifNum(std::string newNum);
   void modifEmail(std::string newEmail);
-  void recevoir(double montant); // Une entité peut recevoir de l'argent
+  void recevoir(CompteCourant const &c1,
+                double montant); // Une entité peut recevoir de l'argent
   void afficheCompte(
-      std::ostream &flux) const; // affiche les comptes et leur compositions
+      Compte const &c1) const; // affiche les comptes et leur compositions
+  int getId() const;           // retourne l'id
+  std::string getNom() const;
+  std::string getPrenom() const;
 
 protected:
   int m_nbCompte; // le nombre de compte
@@ -36,36 +41,46 @@ protected:
 };
 
 /////////////////////////////Classe_Client/////////////////////////////////////
-
+struct Pret {
+  double montant, taux;
+  int id;
+};
 class Client : public Entite {
 public:
   // constructeur
   Client();
-  Client(std::string numTel, std::string nom, std::string prenom,
-         std::string dateNaiss);
+  Client(std::string email, std::string numTel, std::string nom,
+         std::string prenom, std::string dateNaiss);
   ~Client();
   // Opérations observatrices
   virtual void afficher(std::ostream &flux) const;
   // Opérations modificatrices
   void suppCompte();
-  void demanderCarte(std::string nomPrenom);
+  void suppCompte(Compte const &c);
+
+  void demanderCarte();
   void creerCompte();
   void envoyer(double montant,
-               std::string const &id_compte); // Un client peut envoyer de
-                                              // l'argent vers un autre compte
-  void ajouterArgent(double montant); // une client peut ajouter de l'argent
-  void retirerArgent(double montant); // Une client peut retirer de l'argent
+               Compte &c); // Un client peut envoyer de
+                           // l'argent vers un autre compte
+  void retirerArgent(Carte &c1,
+                     double montant); // Une client peut retirer de l'argent
   void acheterTitre(double montant,
                     Titre const &titre); //  un client peut acheter des titres
-  void vendreTitre(Titre const &titre);  // un client peut vendre des titre
-  void contracterPret(double montant,
-                      double taux); // un client peut contracter un prêt
+  void vendreTitre(Titre const &titre,
+                   CompteCourant const &c); // un client peut vendre des titre
+  void
+  contracterPret(double montant, double taux,
+                 CompteCourant const &c); // un client peut contracter un prêt
+  void rembourserPret(Pret const &p, CompteCourant &c);
 
 private:
+  static int cptPret;
+  std::vector<Carte *> m_cartes; // un client possèdes une liste de cartes
   static int m_cptClient;
   static std::vector<int> m_listeIdC; // liste d'id qui se sont libéré
   Portefeuille *m_cto; // un client peut possèder un portefeuille de titre
-  double m_pret;       // prêt contracté
+  std::vector<Pret *> m_prets; // prêts contractés
 };
 
 /////////////////////////////Classe_Employer/////////////////////////////////////
@@ -74,14 +89,15 @@ class Employe : public Entite {
 public:
   // constructeur
   Employe();
-  Employe(std::string numTel, std::string nom, std::string prenom,
-          std::string dateNaiss, std::string poste, double salaire);
+  Employe(std::string email, std::string numTel, std::string nom,
+          std::string prenom, std::string dateNaiss, std::string poste,
+          double salaire);
   virtual ~Employe();
   // Opérations observatrices
   virtual void afficher(std::ostream &flux) const;
   // Opérations modificatrices
   void gestionBonus();
-  void gestionSalaire();
+  void gestionSalaire(double montant);
 
 private:
   static std::vector<int> m_listeIdE; // liste d'id qui se sont libéré
