@@ -7,7 +7,9 @@
 struct Registre {
   std::string m_date;
   double m_montant;
+  void afficherf(std::ostream &flux) const;
 };
+std::ostream &operator<<(std::ostream &flux, Registre const &r);
 class Compte {
 public:
   // constructeur/destructeur
@@ -16,7 +18,6 @@ public:
   // copy
   Compte(Compte const &copy);
   // Opérations observatrices
-  bool ifexist() const; // Renvoie true si compte existe
 
   // Opérations modificatrices
   void debiter(double montant);  // un compte peut etre débité
@@ -29,10 +30,13 @@ public:
   void modifierSolde(double new_solde); // modifier le solde
   std::string getId() const;
   double getSolde() const;
+  void afficherFlux() const;
 
 protected:
+  static int m_cptId;
+  static std::vector<int> m_listId;
   std::vector<Registre> m_registre; // un compte possède un registre de paiement
-  std::string m_idCompte;
+  int m_idCompte;
   double m_taux;                                       // taux d'intérêt
   virtual void afficher(std::ostream &flux) const = 0; // on affiche le solde
   double m_solde;                                      // un compte à un solde
@@ -49,7 +53,6 @@ public:
   // copy
   CompteEpargne(CompteEpargne const &copy);
   // Opérations observatrices
-
   // Opérations modificatrices
 private:
   virtual void afficher(std::ostream &flux) const;
@@ -67,17 +70,16 @@ public:
   CompteCourant(CompteCourant const &copy);
   // Opérations observatrices
   void afficherPlafond() const; // On affiche le plafond
-
   // Opérations modificatrices
-  void ajouterCarte(Carte *new_carte);            // ajout de carte
-  void retirerCarte(std::string const &id_carte); // supprimer une carte
-  void mofierPlafond(double new_plafond);         // modifier modifier plafond
-  void modifierNbC(int new_nbC); // modifier nombre de carte limite
-
+  void ajouterCarte(Carte *new_carte);      // ajout de carte
+  void retirerCarte(Carte const &carte);    // supprimer une carte
+  void modifierPlafond(double new_plafond); // modifier modifier plafond
+  void modifierNbC(int new_nbC);            // modifier nombre de carte limite
+  void modifierDecouvert(double newD);      // modifie le découvert
 private:
+  virtual void afficher(std::ostream &flux) const;
   // un compte courant possède une limite de découvert autorisé
   double m_decouvert;
-  virtual void afficher(std::ostream &flux) const;
   double m_plafond;              // un compte à un plafond d'envoie
   int m_nbCarte;                 // limite de carte possible
   std::vector<Carte *> m_cartes; // Un comptes peut avoir plusieur cartes
