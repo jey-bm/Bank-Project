@@ -8,6 +8,7 @@ class Carte {
 public:
   Carte(std::string nomPrenom, CompteCourant *c);
   ~Carte();
+  Carte(Carte const &copy);
   // opération modificatrice
   void payer(double montant); // On peut payer avec une carte
   void bloquer();             // on peut bloquer la carte

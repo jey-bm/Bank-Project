@@ -9,6 +9,7 @@ class Banque {
 public:
   // constructeur
   Banque();
+  Banque(Banque const &copy);
   ~Banque();
   // Opération observatrice
   bool existe(int id) const; // vérifie l'existance d'un client

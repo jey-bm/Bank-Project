@@ -2,27 +2,40 @@
 #include "Entite.hpp"
 using namespace std;
 Banque::Banque() : m_nom("BRED") {}
+Banque::Banque(Banque const &copy) : m_nom(copy.m_nom) {
+  for (Client *c : copy.m_clients) {
+    Client *client = new Client(*c);
+    m_clients.push_back(client);
+  }
+  for (Employe *e : copy.m_employers) {
+    Employe *employe = new Employe(*e);
+    m_employers.push_back(employe);
+  }
+  for (Titre *t : copy.m_titres) {
+    m_titres.push_back(t->clone());
+  }
+}
 Banque::~Banque() {
   // on parcour chaque element de la liste de clients
-  for (int i = 0; i < m_clients.size(); ++i) {
+  for (unsigned int i = 0; i < m_clients.size(); ++i) {
     delete m_clients[i]; // On supprime le poiteur de cette instance
-    m_clients[i] = 0;    // On le met à 0 pour éviter des erreurs
   }
+  m_clients.clear();
   // on parcour chaque element de la liste d'employés
-  for (int i = 0; i < m_employers.size(); ++i) {
+  for (unsigned int i = 0; i < m_employers.size(); ++i) {
     delete m_employers[i]; // On supprime le poiteur de cette instance
-    m_employers[i] = 0;    // On le met à 0 pour éviter des erreurs
   }
+  m_employers.clear();
   // on parcour chaque element de la liste de titre
-  for (int i = 0; i < m_titres.size(); ++i) {
+  for (unsigned int i = 0; i < m_titres.size(); ++i) {
     delete m_titres[i]; // On supprime le poiteur de cette instance
-    m_titres[i] = 0;    // On le met à 0 pour éviter des erreurs
   }
+  m_titres.clear();
 }
 
 bool Banque::existe(int id) const {
   //  Je parcours mon vecteur à la recherche de l'id
-  for (int i(0); i < m_clients.size(); ++i) {
+  for (unsigned int i(0); i < m_clients.size(); ++i) {
     if (m_clients[i]->getId() == id) {
       return true; // retourn true si le client est trouvé
     }
@@ -33,7 +46,7 @@ bool Banque::existe(int id) const {
 vector<Entite *> Banque::recherche(const std::string &nom,
                                    const std::string &prenom) const {
   vector<Entite *> trouve;
-  for (int i(0); i < m_clients.size(); ++i) {
+  for (unsigned int i(0); i < m_clients.size(); ++i) {
     if (m_clients[i]->getNom() == nom && m_clients[i]->getPrenom() == prenom) {
       trouve.push_back(
           m_clients[i]); // J'ajoute les client ayant le même nom et prénom

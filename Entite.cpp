@@ -13,16 +13,17 @@ Entite::Entite(string email, string numTel, string nom, string prenom,
       m_dateNaiss(dateNaiss), m_nbCompte(0) {}
 Entite::~Entite() {
   // on suprime le vecteur de compte
-  for (int i(0); i < m_comptes.size(); ++i) {
-    delete m_comptes[i];
-    m_comptes[i] = 0;
+  for (Compte *compte : m_comptes) {
+    delete compte;
   }
+  m_comptes.clear();
 }
+
 void Entite::modifNum(string newNum) { m_numTel = newNum; }
 void Entite::modifEmail(string newEmail) { m_email = newEmail; }
 void Entite::recevoir(CompteCourant const &c1, double montant) {
   // on cherche dans ses comptes le compte à créditer
-  for (int i(0); i < m_comptes.size(); ++i) {
+  for (unsigned int i(0); i < m_comptes.size(); ++i) {
     if (m_comptes[i] == &c1) {
       m_comptes[i]->crediter(montant);
       break;
@@ -49,7 +50,7 @@ vector<int> Client::m_listeIdC;
 Client::Client() {}
 Client::Client(string email, string numTel, string nom, string prenom,
                string dateNaiss)
-    : Entite(email, numTel, nom, prenom, dateNaiss), m_cto(0) {
+    : Entite(email, numTel, nom, prenom, dateNaiss), m_cto(new Portefeuille()) {
   // cas si la liste d'id réutilisable est vide
   if (m_listeIdC.empty()) {
     m_id = m_cptClient;
@@ -100,7 +101,7 @@ void Client::suppCompte(Compte const &c) {
 }
 void Client::demanderCarte(CompteCourant *c) {
   // Je crée une instance de carte
-  Carte *c1 = new Carte(m_nom + "" + m_prenom, c);
+  Carte *c1 = new Carte(m_nom + " " + m_prenom, c);
   // je l’insère dans ma liste de carte
   m_cartes.push_back(c1);
 }

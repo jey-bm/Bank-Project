@@ -49,7 +49,21 @@ void Compte::afficherFlux() const {
   }
 }
 
-void Compte::crediter(double montant) { m_solde += montant; }
+void Compte::crediter(double montant) {
+
+  Registre r;
+  m_solde += montant;
+
+  // fait par L'IA
+  time_t t = time(nullptr);
+  tm *now = localtime(&t);
+  char dateStr[11];
+  strftime(dateStr, sizeof(dateStr), "%d/%m/%Y", now);
+
+  r.m_date = dateStr;
+  r.m_montant = montant;
+  m_registre.push_back(r);
+}
 void Compte::modifierSolde(double new_solde) { m_solde = new_solde; }
 string Compte::getId() const { return to_string(m_idCompte); }
 double Compte::getSolde() const { return m_solde; }
@@ -89,7 +103,12 @@ void CompteEpargne::afficher(std::ostream &flux) const {
 // constructeur
 CompteCourant::CompteCourant()
     : Compte(), m_decouvert(0), m_plafond(0), m_nbCarte(5) {}
-CompteCourant::~CompteCourant() { m_cartes.clear(); }
+CompteCourant::~CompteCourant() {
+  for (Carte *carte : m_cartes) {
+    delete carte;
+  }
+  m_cartes.clear();
+}
 // copy
 CompteCourant::CompteCourant(CompteCourant const &copy)
     : Compte(copy), m_decouvert(copy.m_decouvert), m_plafond(copy.m_plafond),
@@ -106,7 +125,7 @@ void CompteCourant::ajouterCarte(Carte *new_carte) {
 void CompteCourant::retirerCarte(Carte const &carte) {
   for (auto it = m_cartes.begin(); it != m_cartes.end(); ++it) {
     if (*it == &carte) {
-
+      delete *it;
       m_cartes.erase(it);
       break;
     }
