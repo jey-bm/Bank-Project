@@ -133,6 +133,7 @@ void Client::ajouterCompte(Compte *c) {
   if (c != nullptr) {
     m_comptes.push_back(c);
   }
+  m_nbCompte++;
 }
 
 void Client::envoyer(double montant, Compte &c) { c.crediter(montant); }
