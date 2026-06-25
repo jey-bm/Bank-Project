@@ -11,6 +11,14 @@ Entite::Entite(string email, string numTel, string nom, string prenom,
                string dateNaiss)
     : m_id(0), m_email(email), m_numTel(numTel), m_nom(nom), m_prenom(prenom),
       m_dateNaiss(dateNaiss), m_nbCompte(0) {}
+
+Entite::Entite(Entite const & e): m_id(0), m_email(e.m_email), m_numTel(e.m_numTel), m_nom(e.m_nom), m_prenom(e.m_prenom),
+      m_dateNaiss(e.m_dateNaiss), m_nbCompte(e.m_nbCompte){
+//On copy les comptes
+for (Compte *cp : e.m_comptes){
+m_comptes.push_back(cp->clone());
+}
+}
 Entite::~Entite() {
   // on suprime le vecteur de compte
   for (Compte *compte : m_comptes) {
@@ -44,6 +52,11 @@ int Entite::getId() const { return m_id; }
 string Entite::getNom() const { return m_nom; }
 string Entite::getPrenom() const { return m_prenom; }
 
+ostream &operator<<(ostream &flux, Entite const &e1){
+  e1.afficher(flux);
+  return flux;
+}
+
 /////////////////////////////Classe_Client/////////////////////////////////////
 int Client::m_cptClient = 1;
 vector<int> Client::m_listeIdC;
@@ -60,6 +73,17 @@ Client::Client(string email, string numTel, string nom, string prenom,
     m_id = m_listeIdC.back(); // Je prend le dernier élement
     m_listeIdC.pop_back();    // puis je le retir de la liste
   }
+}
+Client::Client(Client const & c):Entite(c),m_cto(new Portefeuille(*c.m_cto)){
+// On copy les cartes
+for(Carte *ct: c.m_cartes){
+
+  m_cartes.push_back(new Carte(*ct));
+}
+// On copy les prêts
+for(Pret *pt: c.m_prets){
+  m_prets.push_back(new Pret(*pt));
+}
 }
 Client::~Client() {
   m_listeIdC.push_back(this->m_id);
@@ -158,6 +182,9 @@ void Client::rembourserPret(const Pret &p, CompteCourant &c) {
 int Employe::m_cptEmployer = 1;
 vector<int> Employe::m_listeIdE;
 Employe::Employe() {}
+Employe::Employe(Employe const & copy):Entite(copy),m_salaire(copy.m_salaire),m_poste(copy.m_poste){
+
+}
 Employe::Employe(string email, string numTel, string nom, string prenom,
                  string dateNaiss, string poste, double salaire)
     : Entite(email, numTel, nom, prenom, dateNaiss), m_salaire(salaire),

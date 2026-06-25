@@ -11,6 +11,7 @@ class Entite {
 public:
   // constructeur/ destructeur
   Entite();
+  Entite(Entite const & e);
   Entite(std::string email, std::string numTel, std::string nom,
          std::string prenom, std::string dateNaiss);
   virtual ~Entite();
@@ -49,6 +50,7 @@ class Client : public Entite {
 public:
   // constructeur
   Client();
+  Client(Client const & c);
   Client(std::string email, std::string numTel, std::string nom,
          std::string prenom, std::string dateNaiss);
   ~Client();
@@ -88,6 +90,7 @@ private:
 class Employe : public Entite {
 public:
   // constructeur
+  Employe(Employe const & copy);
   Employe();
   Employe(std::string email, std::string numTel, std::string nom,
           std::string prenom, std::string dateNaiss, std::string poste,

@@ -31,6 +31,7 @@ public:
   std::string getId() const;
   double getSolde() const;
   void afficherFlux() const;
+  virtual Compte* clone() const =0;
 
 protected:
   static int m_cptId;
@@ -54,6 +55,7 @@ public:
   CompteEpargne(CompteEpargne const &copy);
   // Opérations observatrices
   // Opérations modificatrices
+  virtual Compte* clone() const;
 private:
   virtual void afficher(std::ostream &flux) const;
   double m_limites; // plafond limite d'épargne
@@ -76,6 +78,7 @@ public:
   void modifierPlafond(double new_plafond); // modifier modifier plafond
   void modifierNbC(int new_nbC);            // modifier nombre de carte limite
   void modifierDecouvert(double newD);      // modifie le découvert
+  virtual Compte* clone() const;
 private:
   virtual void afficher(std::ostream &flux) const;
   // un compte courant possède une limite de découvert autorisé

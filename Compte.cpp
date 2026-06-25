@@ -97,6 +97,9 @@ void CompteEpargne::afficher(std::ostream &flux) const {
   flux << "Compte d'épargne, Taux : " << m_taux << " , solde : " << m_solde
        << endl;
 }
+Compte* CompteEpargne::clone() const{
+ return new CompteEpargne(*this);
+}
 
 /////////////////////////////Classe_CompteCourant/////////////////////////////////////
 
@@ -143,4 +146,7 @@ void CompteCourant::afficher(ostream &flux) const {
        << ", découvert autorisé : " << m_decouvert
        << " , plafond d’envoi : " << m_plafond
        << " , limite de carte : " << m_nbCarte << endl;
+}
+Compte* CompteCourant::clone() const{
+  return new CompteCourant(*this);
 }
