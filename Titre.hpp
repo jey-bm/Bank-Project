@@ -1,13 +1,15 @@
 #ifndef DEF_TITRE
 #define DEF_TITRE
 #include <iostream>
+#include <string>
 #include <vector>
 class Titre {
 public:
   // constructeur
   Titre();
-  Titre(std::string nom, double prix, double taux);
+  Titre(std::string nom);
   virtual ~Titre();
+  Titre(Titre const &copy);
   // Opérations observatrices
   // Opérations modificatrices
   virtual Titre *clone() const = 0; // clone le titre lors de l'achat
@@ -27,7 +29,7 @@ class Action : public Titre {
 public:
   // constructeur
   Action();
-  Action(std::string nom, double prix, double taux);
+  Action(std::string nom, double prix, int qte);
   virtual ~Action();
   // copy
   Action(Action const &copy);
@@ -39,6 +41,7 @@ public:
   virtual Titre *clone() const;
   virtual void investir(double montant); // Calcul la nouvelle quantité d'action
   virtual double getValue() const;
+  void modifDividende(double div);
 
 private:
   double m_prix; // prix unité en bourse
@@ -50,7 +53,7 @@ class Obligation : public Titre {
 public:
   // constructeur
   Obligation();
-  Obligation(std::string nom, double prix, double taux);
+  Obligation(std::string nom, double montant, double taux, int duree);
   virtual ~Obligation();
   // copy
   Obligation(Obligation const &copy);
@@ -59,13 +62,12 @@ public:
   // Opérations modificatrices
   virtual Titre *clone() const;
   virtual void investir(double montant);
-  void modifMontant(); // Modifie montant investi
   virtual double getValue() const;
 
 private:
-  double m_montant;  // Montant investi initiallement 0
-  double m_taux;     // taux d'intérêt
-  int dureeMaturite; // Durée de vie du contrat à la de celle ci, l'obligation
-                     // est automatiquement détruite
+  double m_montant;    // Montant investi initiallement 0
+  double m_taux;       // taux d'intérêt
+  int m_dureeMaturite; // Durée de vie du contrat à la de celle ci, l'obligation
+                       // est automatiquement détruite
 };
 #endif
