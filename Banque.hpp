@@ -9,6 +9,7 @@ class Banque {
 public:
   // constructeur
   Banque();
+  Banque(std::string nom );
   Banque(Banque const &copy);
   ~Banque();
   // Opération observatrice

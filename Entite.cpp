@@ -48,6 +48,12 @@ void Entite::afficheCompte(Compte const &c1) const {
     }
   }
 }
+void Entite::afficherTousLesComptes() const {
+  for(Compte *c: m_comptes)
+  {
+    cout<<*c;
+  }
+}
 int Entite::getId() const { return m_id; }
 string Entite::getNom() const { return m_nom; }
 string Entite::getPrenom() const { return m_prenom; }
@@ -178,7 +184,27 @@ void Client::rembourserPret(const Pret &p, CompteCourant &c) {
     }
   }
 }
-
+void Client::cederAction(const Titre &titre, int qte) {
+    // On recherche le titre
+    Titre *t = m_cto->rechercher(titre);
+    
+    //On vérifie si il a été trouvé
+    if (t != nullptr) {
+        Action *actionTrouvee = dynamic_cast<Action*>(t);
+        // Je vérifie si c'est bien une action
+        if (actionTrouvee != nullptr) {
+            actionTrouvee->retirerQte(qte);
+            cout << "[Portefeuille] " << m_prenom << " s'est separe de " << qte << " actions." << endl;
+        } else {
+            cout << "Erreur : Impossible de fractionner, ce titre n'est pas une Action." << endl;
+        }
+    } else {
+        cout << "Erreur : " << m_prenom << " ne possede pas ce titre." << endl;
+    }
+}
+Compte* Client::getCompte(int num){
+  return m_comptes[num];
+}
 /////////////////////////////Classe_Employer/////////////////////////////////////
 int Employe::m_cptEmployer = 1;
 vector<int> Employe::m_listeIdE;
@@ -200,7 +226,7 @@ Employe::Employe(string email, string numTel, string nom, string prenom,
 }
 Employe::~Employe() { m_listeIdE.push_back(this->m_id); }
 void Employe::afficher(ostream &flux) const {
-  flux << "Nom : " << m_nom << " ,prenom : " << m_prenom << " Id : " << m_id
+  flux << "Nom : " << m_nom << " ,prenom : " << m_prenom << " Id : " << m_id<<" , date de naissance : "<< m_dateNaiss
        << " ,poste : " << m_poste << " , salaire : " << m_salaire << endl;
 }
 void Employe::gestionSalaire(double montant) { m_salaire = montant; }

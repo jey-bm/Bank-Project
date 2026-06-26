@@ -52,6 +52,15 @@ void Action::afficher(ostream &flux) const {
        << " , prix unitaire : " << m_prix << endl;
 }
 // Opérations modificatrices
+void Action::retirerQte(int qteARetirer) {
+    if (qteARetirer > 0 && qteARetirer <= m_qtite) {
+        m_qtite -= qteARetirer; // On retire exactement le bon nombre de feuilles
+    } 
+    else if (qteARetirer > m_qtite) {
+        // S'il demande à retirer plus d'actions qu'il n'en a, 
+        m_qtite = 0; 
+    }
+  }
 void Action::modifPrix(double newPrix) { m_prix = newPrix; }
 void Action::modifierQte(short int newQte) { m_qtite = newQte; }
 Titre *Action::clone() const { return new Action(*this); }

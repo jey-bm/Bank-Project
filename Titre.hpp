@@ -36,6 +36,7 @@ public:
   // Opérations observatrices
   virtual void afficher(std::ostream &flux) const;
   // Opérations modificatrices
+  void retirerQte(int qteARetirer); 
   void modifPrix(double newPrix);
   void modifierQte(short int newQte);
   virtual Titre *clone() const;

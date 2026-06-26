@@ -40,7 +40,7 @@ protected:
   int m_idCompte;
   double m_taux;                                       // taux d'intérêt
   virtual void afficher(std::ostream &flux) const = 0; // on affiche le solde
-  double m_solde;                                      // un compte à un solde
+  long double m_solde;                                      // un compte à un solde
   friend std::ostream &operator<<(std::ostream &flux, Compte const &compte);
 };
 

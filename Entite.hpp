@@ -22,7 +22,8 @@ public:
   void recevoir(CompteCourant const &c1,
                 double montant); // Une entité peut recevoir de l'argent
   void afficheCompte(
-      Compte const &c1) const; // affiche les comptes et leur compositions
+      Compte const &c1) const; // affiche le compte et sa composition
+  void afficherTousLesComptes() const;
   int getId() const;           // retourne l'id
   std::string getNom() const;
   std::string getPrenom() const;
@@ -55,7 +56,6 @@ public:
          std::string prenom, std::string dateNaiss);
   ~Client();
   // Opérations observatrices
-  virtual void afficher(std::ostream &flux) const;
   // Opérations modificatrices
   void suppCompte();
   void suppCompte(Compte const &c);
@@ -75,8 +75,10 @@ public:
   contracterPret(double montant, double taux,
                  CompteCourant const &c); // un client peut contracter un prêt
   void rembourserPret(Pret const &p, CompteCourant &c);
-
+  Compte* getCompte(int id);
+  void cederAction(const Titre &titre, int qte);// un client peut céder une quantité précise d'une action
 private:
+  virtual void afficher(std::ostream &flux) const;
   static int cptPret;
   std::vector<Carte *> m_cartes; // un client possèdes une liste de cartes
   static int m_cptClient;
@@ -97,11 +99,11 @@ public:
           double salaire);
   virtual ~Employe();
   // Opérations observatrices
-  virtual void afficher(std::ostream &flux) const;
   // Opérations modificatrices
   void gestionSalaire(double montant);
 
 private:
+  virtual void afficher(std::ostream &flux) const;
   static std::vector<int> m_listeIdE; // liste d'id qui se sont libéré
   static int m_cptEmployer;           // compteur d'id
   double m_salaire;                   // Un employer à un salaire

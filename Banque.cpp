@@ -2,6 +2,7 @@
 #include "Entite.hpp"
 using namespace std;
 Banque::Banque() : m_nom("BRED") {}
+Banque::Banque(std::string nom ): m_nom(nom){}
 Banque::Banque(Banque const &copy) : m_nom(copy.m_nom) {
   for (Client *c : copy.m_clients) {
     Client *client = new Client(*c);
@@ -50,6 +51,12 @@ vector<Entite *> Banque::recherche(const std::string &nom,
     if (m_clients[i]->getNom() == nom && m_clients[i]->getPrenom() == prenom) {
       trouve.push_back(
           m_clients[i]); // J'ajoute les client ayant le même nom et prénom
+    }
+  }
+  for (unsigned int i(0); i < m_employers.size(); ++i) {
+    if (m_employers[i]->getNom() == nom && m_employers[i]->getPrenom() == prenom) {
+      trouve.push_back(
+          m_employers[i]); // J'ajoute les employer ayant le même nom et prénom
     }
   }
   return trouve;
